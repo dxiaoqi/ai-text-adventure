@@ -1,6 +1,7 @@
 "use client"
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
 import { useChat } from 'ai/react'
+// @ts-ignore
 export default function GameModal({isOpen, onOpenChange}) {
   const { input, handleInputChange, handleSubmit, isLoading, messages } = useChat({
     api: '/api/chat'
