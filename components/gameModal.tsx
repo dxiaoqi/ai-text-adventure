@@ -40,7 +40,6 @@ export default function GameModal({isOpen, onOpenChange}) {
         isOpen={isOpen} 
         onOpenChange={onOpenChange}
         isDismissable={false}
-        radius="2xl"
         scrollBehavior="inside"
         classNames={{
           body: "py-6",
