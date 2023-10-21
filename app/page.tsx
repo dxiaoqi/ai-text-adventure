@@ -1,3 +1,4 @@
+"use client"
 import NextLink from "next/link";
 import { Link } from "@nextui-org/link";
 import { Snippet } from "@nextui-org/snippet";
@@ -6,31 +7,32 @@ import { button as buttonStyles } from "@nextui-org/theme";
 import { siteConfig } from "@/config/site";
 import { title, subtitle } from "@/components/primitives";
 import { GithubIcon } from "@/components/icons";
+import GameModal from "@/components/gameModal";
+import { Button, useDisclosure } from "@nextui-org/react";
 
 export default function Home() {
+	const {isOpen, onOpen, onOpenChange} = useDisclosure();
 	return (
 		<section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
 			<div className="inline-block max-w-lg text-center justify-center">
 				<h1 className={title()}>Make&nbsp;</h1>
-				<h1 className={title({ color: "violet" })}>beautiful&nbsp;</h1>
+				<h1 className={title({ color: "violet" })}>Interesting&nbsp;</h1>
 				<br />
 				<h1 className={title()}>
-					websites regardless of your design experience.
+					Text Adventure Game Power By GPT.
 				</h1>
 				<h2 className={subtitle({ class: "mt-4" })}>
-					Beautiful, fast and modern React UI library.
+					Freedom, Storytelling and Unique For U.
 				</h2>
 			</div>
 
 			<div className="flex gap-3">
-				<Link
-					isExternal
-					as={NextLink}
-					href={siteConfig.links.docs}
+				<Button color="primary" variant="shadow"
+					onClick={onOpen}
 					className={buttonStyles({ color: "primary", radius: "full", variant: "shadow" })}
 				>
-					Documentation
-				</Link>
+					Start Game
+				</Button>
 				<Link
 					isExternal
 					as={NextLink}
@@ -45,10 +47,11 @@ export default function Home() {
 			<div className="mt-8">
 				<Snippet hideSymbol hideCopyButton variant="flat">
 					<span>
-						Get started by editing <Code color="primary">app/page.tsx</Code>
+						Get started by Gpt 4 <Code color="primary">Go</Code>
 					</span>
 				</Snippet>
 			</div>
+			<GameModal isOpen={isOpen} onOpen={onOpen} onOpenChange={onOpenChange} />
 		</section>
 	);
 }
