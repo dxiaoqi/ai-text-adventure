@@ -52,7 +52,7 @@ export default function RootLayout({
 								title="nextui.org homepage"
 							>
 								<span className="text-default-600">Powered by</span>
-								<p className="text-primary">GPT</p>
+								<p className="text-primary">GPT & Next UI</p>
 							</Link>
 						</footer>
 					</div>

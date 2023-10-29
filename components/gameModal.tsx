@@ -1,38 +1,41 @@
 "use client"
+import { scanner } from "@/app/util/parserTemplate";
+// import parserTemplate from "@/app/util/parserTemplate";
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure} from "@nextui-org/react";
-import { useChat } from 'ai/react'
+import { ChatRequestOptions } from "ai";
+import { Message, useChat } from 'ai/react'
+import { ChangeEvent, FormEvent, useEffect, useLayoutEffect, useMemo } from "react";
+interface IProps {
+  isOpen: boolean;
+  messages: Message[];
+  handleSubmit: (e: FormEvent<HTMLFormElement>, chatRequestOptions?: ChatRequestOptions | undefined) => void;
+  handleInputChange: (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => void;
+}
 // @ts-ignore
-export default function GameModal({isOpen, onOpenChange}) {
-  const { input, handleInputChange, handleSubmit, isLoading, messages } = useChat({
-    api: '/api/chat'
-  });
-  console.log(messages, input)
+ const GameModal: React.FC<IProps> = ({isOpen, onOpenChange, messages, handleInputChange, handleSubmit}) => {
+  //const { input, handleInputChange, handleSubmit, isLoading, messages } = useChat();
+  console.log(messages.filter(msg => msg.role === 'assistant'));
+  const output = useMemo(() => messages.filter(msg => msg.role === 'assistant').pop(), [messages]);
+  const cc = scanner(output?.content || '');
   const gameScreen = {
-    screen: '游戏开始',
-    message: `[系统启动中...]\n
-    [加载游戏数据...]\n
-    [初始化角色状态... 健康值: 100, 幸运值: 50, 金钱值: 20]
-    [游戏开始...]
-    
-    你是一个名叫艾瑞克的冒险者，身处在一个古老且神秘的世界。你的目标是寻找传说中的神器，但是这个世界充满了未知和危险。你准备好开始你的冒险了吗？
-    
-    (｡•̀ᴗ-)✧
-    
-    健康值: 100 (100-0=100)
-    幸运值: 50 (50+0=50)
-    金钱值: 20 (20+0=20)
-    `,
-    buttons: [
-      '去市场',
-      '开始冒险'
-    ]
+    screen: cc.screen,
+    message: cc.story,
+    buttons: cc.tip ? cc?.phrase?.split(/(、)/).filter(s => !/(、|\d )/.test(s)) : [],
+    tip: cc.tip,
   }
 
   const submit = (e: any, msg: string) => {
     e.target.value = msg;
     handleInputChange(e);
-    handleSubmit(e);
+    handleSubmit(e, {
+			options: {
+				headers: {
+					apiKey: localStorage.getItem('OPENAI_API_KEY')
+				}
+			}
+		})
   }
+
   return (
     <>
       <Modal 
@@ -53,15 +56,18 @@ export default function GameModal({isOpen, onOpenChange}) {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">{gameScreen.screen}</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">Game</ModalHeader>
               <ModalBody>
-              {gameScreen.message}
+              {gameScreen.screen}
+              {gameScreen?.message}
               </ModalBody>
-              <ModalFooter>
+              <ModalFooter className="flex flex-wrap">
               {gameScreen.buttons.map(BT => 
-                <Button key={BT} className="bg-[#6f4ef2] shadow-lg shadow-indigo-500/20" onClick={(e) => submit(e, BT)}>
-                  {BT}
-                </Button>)}
+                <form onSubmit={(e) => submit(e, BT)} key={BT}>
+                  <Button key={BT} className="bg-[#6f4ef2] shadow-lg shadow-indigo-500/20 text-xs" type="submit">
+                    {BT}
+                  </Button> 
+                </form>)}
               </ModalFooter>
             </>
           )}
@@ -70,3 +76,4 @@ export default function GameModal({isOpen, onOpenChange}) {
     </>
   );
 }
+export default GameModal;

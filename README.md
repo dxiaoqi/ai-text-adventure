@@ -1,3 +1,6 @@
+# ai-text-adventure
+基于OPENAI 构建的文字游戏
+请使用自己的ai openai key
 # Next.js & NextUI Template
 
 This is a template for creating applications using Next.js 13 (app directory) and NextUI (v2).
