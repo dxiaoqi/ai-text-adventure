@@ -30,7 +30,7 @@ interface IProps {
     handleSubmit(e, {
 			options: {
 				headers: {
-					apiKey: localStorage.getItem('OPENAI_API_KEY')
+					apiKey: localStorage.getItem('OPENAI_API_KEY') || ''
 				}
 			}
 		})
