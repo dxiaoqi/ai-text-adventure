@@ -1,8 +1,8 @@
 import { OpenAIStream, StreamingTextResponse } from 'ai'
 import { openai } from '@/app/util/openai';
 import { NextApiResponse } from 'next';
-export async function POST(request: Request, res: NextApiResponse){
-  openai.apiKey = request.headers.get('apiKey');
+export async function POST(request: Request){
+  openai.apiKey = request.headers.get('apiKey') || '';
   if (!openai.apiKey) {
     // return Response.json({
     //   Error: '11111'
