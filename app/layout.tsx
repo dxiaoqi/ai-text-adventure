@@ -6,7 +6,7 @@ import { Providers } from "./providers";
 import { Navbar } from "@/components/navbar";
 import { Link } from "@nextui-org/link";
 import clsx from "clsx";
-
+import { Analytics } from '@vercel/analytics/react';
 export const metadata: Metadata = {
 	title: {
 		default: siteConfig.name,
@@ -57,6 +57,7 @@ export default function RootLayout({
 						</footer>
 					</div>
 				</Providers>
+				<Analytics />
 			</body>
 		</html>
 	);
